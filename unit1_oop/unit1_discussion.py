@@ -24,8 +24,23 @@ from copy import copy, deepcopy
 #
 # Replace the pass statement with your implementation.
 
-class ParentClass:
-    pass
+
+class Aircraft:
+    # Class variable shared by all aircraft objects
+    aircraft_category = "General Aviation"
+
+    def __init__(self, make, model, registration):
+        # Instance variables unique to each aircraft
+        self.make = make
+        self.model = model
+        self.registration = registration
+
+    def display_info(self):
+        return (
+            f"Make: {self.make}, Model: {self.model}, "
+            f"Registration: {self.registration}, "
+            f"Category: {self.aircraft_category}"
+        )
 
 
 # TODO 2:
@@ -40,8 +55,34 @@ class ParentClass:
 #
 # Replace the pass statement with your implementation.
 
-class ChildClass(ParentClass):
-    pass
+class TrainingAircraft(Aircraft):
+    # New class variable for training aircraft
+    aircraft_purpose = "Flight Training"
+
+    def __init__(self, make, model, registration, max_passengers,
+                 flight_hours):
+        # Inherit the parent class's instance variables
+        super().__init__(make, model, registration)
+
+        # New instance variables for training aircraft
+        self.max_passengers = max_passengers
+        self.flight_hours = flight_hours
+
+    # Override the parent class method
+    def display_info(self):
+        return (
+            f"Training Aircraft - Make: {self.make}, "
+            f"Model: {self.model}, Registration: {self.registration}, "
+            f"Category: {self.aircraft_category}, "
+            f"Purpose: {self.aircraft_purpose}, "
+            f"Max Passengers: {self.max_passengers}, "
+            f"Flight Hours: {self.flight_hours}"
+        )
+
+    # New method specific to training aircraft
+    def log_flight(self, hours):
+        self.flight_hours += hours
+        return f"{hours} flight hours logged. Total: {self.flight_hours}"
 
 
 # TODO 3:
@@ -57,7 +98,30 @@ class ChildClass(ParentClass):
 
 def demonstrate_namespaces():
     print("\n=== Namespace Demonstration ===")
-    print("TODO: Implement namespace demonstration")
+
+    # Create two training aircraft objects
+    aircraft1 = TrainingAircraft("Cessna", "172", "N123AB", 3, 120)
+    aircraft2 = TrainingAircraft("Piper", "PA-28", "N456CD", 3, 95)
+
+    # Access a class variable through the class itself
+    print("Class variable:", TrainingAircraft.aircraft_purpose)
+
+    # Access the same class variable through an object
+    print("Aircraft 1 purpose:", aircraft1.aircraft_purpose)
+
+    # Add a new attribute to only one object
+    aircraft1.last_inspection = "October 2026"
+
+    # Display each object's instance namespace
+    print("\nAircraft 1 instance namespace:")
+    print(aircraft1.__dict__)
+
+    print("\nAircraft 2 instance namespace:")
+    print(aircraft2.__dict__)
+
+    # Display information about the class namespace
+    print("\nTrainingAircraft class namespace:")
+    print(TrainingAircraft.__dict__)
 
 
 # TODO 4:
@@ -73,7 +137,40 @@ def demonstrate_namespaces():
 
 def demonstrate_copying():
     print("\n=== Copy Demonstration ===")
-    print("TODO: Implement shallow copy and deep copy demonstration")
+
+    # Create a flight training record containing nested mutable data
+    original = {
+        "aircraft": "Cessna 172",
+        "pilot": "Student Pilot",
+        "flight_log": {
+            "total_hours": 120,
+            "completed_lessons": ["Takeoffs", "Landings"]
+        }
+    }
+
+    # A shallow copy creates a new outer dictionary but shares
+    # nested mutable objects with the original.
+    shallow_copy = copy(original)
+
+    # A deep copy creates a new outer dictionary and recursively
+    # copies nested objects, keeping their data independent.
+    deep_copy = deepcopy(original)
+
+    # Modify the original object's nested data
+    original["flight_log"]["total_hours"] = 125
+    original["flight_log"]["completed_lessons"].append(
+        "Instrument Approaches"
+    )
+
+    # Display all three dictionaries to compare their contents
+    print("Original flight record:")
+    print(original)
+
+    print("\nShallow copy of flight record:")
+    print(shallow_copy)
+
+    print("\nDeep copy of flight record:")
+    print(deep_copy)
 
 
 # TODO 5:
@@ -89,10 +186,25 @@ def demonstrate_copying():
 def main():
     print("=== Unit 1 OOP Assignment ===")
 
-    print("\nTODO: Create and test your parent object")
+    # Create and test a parent class object
+    aircraft = Aircraft("Cessna", "150", "N789EF")
+    print("\nParent class aircraft:")
+    print(aircraft.display_info())
 
-    print("\nTODO: Create and test your child object")
+    # Create and test a child class object
+    training_aircraft = TrainingAircraft(
+        "Cessna", "172", "N123AB", 3, 120
+    )
 
+    print("\nChild class training aircraft:")
+    print(training_aircraft.display_info())
+
+    # Demonstrate an inherited method override and a new child method
+    print("\nDemonstrating inheritance:")
+    print(training_aircraft.display_info())
+    print(training_aircraft.log_flight(2))
+
+    # Demonstrate namespaces and copying
     demonstrate_namespaces()
     demonstrate_copying()
 
