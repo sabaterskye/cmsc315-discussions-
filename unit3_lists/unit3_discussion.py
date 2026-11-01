@@ -10,113 +10,116 @@ shift elements in memory and how different operations impact performance.
 """
 
 
-def insert_at(lst, index, value):
-    """
-    TODO (Student):
-    Insert a value into the list at the specified index.
 
-    Requirements:
-    - Use a list operation to insert the value.
-    - Add comments explaining what happens to existing elements
-      after an insertion occurs.
-    - Use comments to explain how insertion performance may vary depending on
-      where the insertion occurs.
-    """
-    pass
+def insert_at(lst, index, value):
+    # Insert the value at the selected position.
+    # Existing elements shift to the right to make room.
+    # Inserting at the beginning takes longer because more elements shift.
+    # Inserting at the end is generally faster.
+    lst.insert(index, value)
 
 
 def delete_at(lst, index):
-    """
-    TODO (Student):
-    Remove and return the value at the specified index.
+    # Check that the index is valid before deleting anything.
+    # This prevents errors when trying to remove an item that doesn't exist.
+    if index < 0 or index >= len(lst):
+        return None
 
-    Requirements:
-    - Validate that the index exists.
-    - Return the removed value.
-    - Return None if the index is invalid.
-    - Add comments explaining why index validation and safe deletion are important.
-    """
-    pass
+    # Remove and return the selected value.
+    # Remaining elements shift left to fill the empty space.
+    return lst.pop(index)
 
 
 def search_value(lst, value):
-    """
-    TODO (Student):
-    Search for a value within the list.
+    # This is a linear search because it checks each item one at a time.
+    # It scans from beginning to end until it finds a match.
+    for index in range(len(lst)):
+        if lst[index] == value:
+            return index
 
-    Requirements:
-    - Return the index if the value is found.
-    - Return -1 if the value is not found.
-    - Add comments explaining why this is a linear search and why it scans sequentially.
-    """
-    pass
+    # Return -1 if the value isn't in the list.
+    return -1
 
 
 def main():
     print("=== UNIT 3: LIST OPERATIONS ===")
 
     # ===============================
-    # TODO (Student): INSERTION TESTS
+    # INSERTION TESTS
     # ===============================
-    #
-    # Requirements:
-    # 1. Create a list containing several values.
-    # 2. Display the original list.
-    # 3. Test insertion at:
-    #    - the beginning
-    #    - the middle
-    #    - the end
-    # 4. Display the list after each insertion.
-    # 5. Use comments to explain each step in the implementation.
 
     print("\n=== INSERTION TESTS ===")
-    print("TODO: Create a list and demonstrate insertions.")
+
+    # These represent flight details in a pilot's flight plan.
+    flight_plan = ["Preflight", "Taxi", "Takeoff", "Cruise"]
+
+    print("Original flight plan:", flight_plan)
+
+    # Insert at the beginning.
+    insert_at(flight_plan, 0, "Weather Check")
+    print("After beginning insertion:", flight_plan)
+
+    # Insert in the middle.
+    insert_at(flight_plan, 3, "Climb")
+    print("After middle insertion:", flight_plan)
+
+    # Insert at the end.
+    insert_at(flight_plan, len(flight_plan), "Landing")
+    print("After end insertion:", flight_plan)
 
     # ===============================
-    # TODO (Student): DELETION TESTS
+    # DELETION TESTS
     # ===============================
-    #
-    # Requirements:
-    # 1. Delete an item from:
-    #    - the beginning
-    #    - the middle
-    #    - the end
-    # 2. Display the removed value.
-    # 3. Display the updated list after each deletion.
-    # 4. Use comments to clearly explain what is happening in the output.
 
     print("\n=== DELETION TESTS ===")
-    print("TODO: Demonstrate deletions from multiple positions.")
+
+    # Remove the first item.
+    removed = delete_at(flight_plan, 0)
+    print("Removed from beginning:", removed)
+    print("Updated flight plan:", flight_plan)
+
+    # Remove an item from the middle.
+    removed = delete_at(flight_plan, 2)
+    print("Removed from middle:", removed)
+    print("Updated flight plan:", flight_plan)
+
+    # Remove the last item.
+    removed = delete_at(flight_plan, len(flight_plan) - 1)
+    print("Removed from end:", removed)
+    print("Updated flight plan:", flight_plan)
 
     # ===============================
-    # TODO (Student): SEARCH TESTS
+    # SEARCH TESTS
     # ===============================
-    #
-    # Requirements:
-    # 1. Search for a value that exists.
-    # 2. Search for a value that does not exist.
-    # 3. Display the search results with clear explanations.
-    # 4. Use comments to explain each step.
 
     print("\n=== SEARCH TESTS ===")
-    print("TODO: Demonstrate searching for values.")
+
+    # Search for an item that exists.
+    result = search_value(flight_plan, "Takeoff")
+    print("Takeoff found at index:", result)
+
+    # Search for an item that doesn't exist.
+    result = search_value(flight_plan, "Parking")
+    print("Parking search result:", result)
 
     # ===============================
-    # TODO (Student): EDGE CASES
+    # EDGE CASES
     # ===============================
-    #
-    # Demonstrate at least two edge cases.
-    #
-    # Example ideas:
-    # - Delete using an invalid index
-    # - Search for a missing value
-    # - Insert into an empty list
-    # - Delete from an empty list
-    # - Use comments to explain each edge case.
 
     print("\n=== EDGE CASES ===")
-    print("TODO: Demonstrate at least two edge cases.")
 
+    # Try deleting with an invalid index.
+    result = delete_at(flight_plan, 20)
+    print("Invalid deletion result:", result)
+
+    # Try deleting from an empty list.
+    empty_list = []
+    result = delete_at(empty_list, 0)
+    print("Deleting from empty list:", result)
+
+    # Insert into an empty list.
+    insert_at(empty_list, 0, "Preflight")
+    print("After inserting into empty list:", empty_list)
 
 
 if __name__ == "__main__":
